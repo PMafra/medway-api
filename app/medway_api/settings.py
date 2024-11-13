@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     "student",
     "question",
     "exam",
-    "utils"
+    "utils",
+    "submission"
 ]
 
 MIDDLEWARE = [

@@ -15,3 +15,6 @@ class Alternative(models.Model):
     content = models.TextField()
     option = models.IntegerField(choices=AlternativesChoices)
     is_correct = models.BooleanField(null=True)
+
+    def __str__(self):
+        return self.content
