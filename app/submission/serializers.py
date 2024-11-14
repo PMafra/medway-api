@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from rest_framework.validators import UniqueTogetherValidator
 from .models import ExamSubmission, Answer
 from student.models import Student
 from exam.models import Exam
@@ -31,7 +30,7 @@ class ExamSubmissionSerializer(serializers.ModelSerializer):
         exam = get_object_or_404(Exam, id=exam_id)
 
         if ExamSubmission.objects.filter(student=student, exam=exam).exists():
-            raise serializers.ValidationError("Este estudante já submeteu esta prova anteriormente.")
+            raise serializers.ValidationError("This student has already submitted this exam.")
 
         answers = data.get('answers', [])
 
