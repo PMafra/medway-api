@@ -2,6 +2,8 @@
 
 A Django RESTful API for managing exams, students, submissions, and results.
 
+![medway-db](https://github.com/user-attachments/assets/32884074-dc46-425e-aa5d-d284d78f4a9f)
+
 ## Features
 
 - **Student Management**: Create and manage student profiles.
