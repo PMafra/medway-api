@@ -93,3 +93,11 @@ black .
 docker exec -it medway-api-db-1 bash
 psql -U teste -d teste
 ```
+
+## Future Implementation Ideas
+
+- Pre-commit hook
+- Admin interface for saving and visualizing submissions
+- [uv]([url](https://github.com/astral-sh/uv)) package manager
+- Authentication
+- Logging
