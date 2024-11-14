@@ -5,7 +5,9 @@ from question.models import Question
 
 class Exam(models.Model):
     name = models.CharField(max_length=100)
-    questions = models.ManyToManyField(Question, through='ExamQuestion', related_name='questions')
+    questions = models.ManyToManyField(
+        Question, through="ExamQuestion", related_name="questions"
+    )
 
     def __str__(self):
         return self.name
@@ -17,8 +19,8 @@ class ExamQuestion(models.Model):
     number = models.PositiveIntegerField()
 
     class Meta:
-        unique_together = ('exam', 'number')
-        ordering = ['number']
+        unique_together = ("exam", "number")
+        ordering = ["number"]
 
     def __str__(self):
-        return f'{self.question} - {self.exam}'
+        return f"{self.question} - {self.exam}"

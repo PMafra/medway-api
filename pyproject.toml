@@ -1,0 +1,15 @@
+[tool.ruff]
+exclude = ["build", "dist", ".git", "__pycache__", "migrations"]
+
+select = ["E", "F", "W", "I", "D", "N", "C", "B", "S", "Q"]
+
+ignore = ["E203", "E501", "W503"]
+
+line-length = 88
+
+fix = true
+
+[tool.ruff.isort]
+known_first_party = ["medway-api"]
+known_third_party = ["django", "rest_framework"]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]

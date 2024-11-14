@@ -24,10 +24,16 @@ class Command(BaseCommand):
                 has_establish_db_connection = True
                 break
             except OperationalError:
-                self.stdout.write("Still waiting for database connection, waiting 1 second...")
+                self.stdout.write(
+                    "Still waiting for database connection, waiting 1 second..."
+                )
                 time.sleep(1)
 
         if has_establish_db_connection:
             self.stdout.write(self.style.SUCCESS("Database is available!"))
         else:
-            self.stderr.write(self.style.ERROR("Error! It was not possible to establish the connection."))
+            self.stderr.write(
+                self.style.ERROR(
+                    "Error! It was not possible to establish the connection."
+                )
+            )

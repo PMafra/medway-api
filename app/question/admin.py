@@ -7,7 +7,7 @@ class AlternativeInline(admin.TabularInline):
     model = Alternative
     min_num = 1
     max_num = 5
-    ordering = ('option',)
+    ordering = ("option",)
 
 
 @admin.register(Question)
