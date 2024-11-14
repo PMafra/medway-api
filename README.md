@@ -96,6 +96,7 @@ psql -U teste -d teste
 
 ## Future Implementation Ideas
 
+- `conftest.py` file for tests
 - Pre-commit hook
 - Admin interface for saving and visualizing submissions
 - [uv]([url](https://github.com/astral-sh/uv)) package manager
