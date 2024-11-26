@@ -90,7 +90,7 @@ black .
 4. **Access database**:
 
 ```bash
-docker exec -it medway-api-db-1 bash
+docker exec -it medway-api_db_1 bash
 psql -U teste -d teste
 ```
 
