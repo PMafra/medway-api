@@ -332,7 +332,10 @@ def test_exam_result_serializer(db, student, exam, questions, alternatives):
             question=question,
             selected_alternative=correct_alternative,
         )
+
+    submission = ExamSubmission.objects.with_total_correct().get(pk=submission.pk)
     serializer = ExamResultSerializer(instance=submission)
+
     data = serializer.data
     assert data["student"] == str(student)
     assert data["exam"] == exam.name
@@ -356,7 +359,10 @@ def test_exam_result_serializer_with_incorrect_answers(
             question=question,
             selected_alternative=selected_alternative,
         )
+
+    submission = ExamSubmission.objects.with_total_correct().get(pk=submission.pk)
     serializer = ExamResultSerializer(instance=submission)
+
     data = serializer.data
     assert data["total_correct"] == len(questions) - 1
     percentage = ((len(questions) - 1) / len(questions)) * 100

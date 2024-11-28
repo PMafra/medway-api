@@ -103,7 +103,7 @@ class ExamResultSerializer(serializers.ModelSerializer):
     student = serializers.StringRelatedField()
     exam = serializers.StringRelatedField()
     answers = AnswerResultSerializer(many=True)
-    total_correct = serializers.SerializerMethodField()
+    total_correct = serializers.IntegerField()
     percentage_score = serializers.SerializerMethodField()
 
     class Meta:
@@ -117,14 +117,9 @@ class ExamResultSerializer(serializers.ModelSerializer):
             "percentage_score",
         ]
 
-    def get_total_correct(self, obj):
-        return sum(
-            1 for answer in obj.answers.all() if answer.selected_alternative.is_correct
-        )
-
     def get_percentage_score(self, obj):
-        total_questions = obj.answers.count()
-        total_correct = self.get_total_correct(obj)
+        total_questions = obj.total_questions or 0
+        total_correct = obj.total_correct or 0
         if total_questions > 0:
             return (total_correct / total_questions) * 100
         return 0

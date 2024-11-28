@@ -2,6 +2,28 @@ from django.db import models
 from student.models import Student
 from exam.models import Exam
 from question.models import Question, Alternative
+from django.db.models import Sum, Case, When, IntegerField, Count
+
+
+class ExamSubmissionQuerySet(models.QuerySet):
+    def with_total_correct(self):
+        return (
+            self.annotate(
+                total_correct=Sum(
+                    Case(
+                        When(
+                            answers__selected_alternative__is_correct=True,
+                            then=1,
+                        ),
+                        default=0,
+                        output_field=IntegerField(),
+                    )
+                ),
+                total_questions=Count("answers"),
+            )
+            .select_related("student", "exam")
+            .prefetch_related("answers__selected_alternative", "answers__question")
+        )
 
 
 class ExamSubmission(models.Model):
@@ -10,6 +32,8 @@ class ExamSubmission(models.Model):
     )
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE, related_name="submissions")
     submission_time = models.DateTimeField(auto_now_add=True)
+
+    objects = ExamSubmissionQuerySet.as_manager()
 
     class Meta:
         unique_together = ("student", "exam")

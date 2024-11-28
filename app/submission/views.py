@@ -17,13 +17,16 @@ class ExamSubmissionCreateView(generics.CreateAPIView):
 
 
 class ExamResultView(generics.RetrieveAPIView):
-    queryset = ExamSubmission.objects.all()
     serializer_class = ExamResultSerializer
     lookup_fields = ("student_id", "exam_id")
 
+    def get_queryset(self):
+        return ExamSubmission.objects.with_total_correct()
+
     def get_object(self):
+        queryset = self.get_queryset()
         student_id = self.kwargs.get("student_id")
         exam_id = self.kwargs.get("exam_id")
         student = generics.get_object_or_404(Student, id=student_id)
         exam = generics.get_object_or_404(Exam, id=exam_id)
-        return generics.get_object_or_404(ExamSubmission, student=student, exam=exam)
+        return generics.get_object_or_404(queryset, student=student, exam=exam)
