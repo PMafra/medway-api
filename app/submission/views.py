@@ -21,7 +21,7 @@ class ExamResultView(generics.RetrieveAPIView):
     lookup_fields = ("student_id", "exam_id")
 
     def get_queryset(self):
-        return ExamSubmission.objects.with_total_correct()
+        return ExamSubmission.objects.annotate_performance_metrics()
 
     def get_object(self):
         queryset = self.get_queryset()

@@ -333,7 +333,9 @@ def test_exam_result_serializer(db, student, exam, questions, alternatives):
             selected_alternative=correct_alternative,
         )
 
-    submission = ExamSubmission.objects.with_total_correct().get(pk=submission.pk)
+    submission = ExamSubmission.objects.annotate_performance_metrics().get(
+        pk=submission.pk
+    )
     serializer = ExamResultSerializer(instance=submission)
 
     data = serializer.data
@@ -360,7 +362,9 @@ def test_exam_result_serializer_with_incorrect_answers(
             selected_alternative=selected_alternative,
         )
 
-    submission = ExamSubmission.objects.with_total_correct().get(pk=submission.pk)
+    submission = ExamSubmission.objects.annotate_performance_metrics().get(
+        pk=submission.pk
+    )
     serializer = ExamResultSerializer(instance=submission)
 
     data = serializer.data

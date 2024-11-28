@@ -2,27 +2,37 @@ from django.db import models
 from student.models import Student
 from exam.models import Exam
 from question.models import Question, Alternative
-from django.db.models import Sum, Case, When, IntegerField, Count
+from django.db.models import Sum, Case, When, IntegerField, Count, Prefetch
 
 
 class ExamSubmissionQuerySet(models.QuerySet):
     def with_total_correct(self):
-        return (
-            self.annotate(
-                total_correct=Sum(
-                    Case(
-                        When(
-                            answers__selected_alternative__is_correct=True,
-                            then=1,
-                        ),
-                        default=0,
-                        output_field=IntegerField(),
-                    )
-                ),
-                total_questions=Count("answers"),
+        return self.annotate(
+            total_correct=Sum(
+                Case(
+                    When(
+                        answers__selected_alternative__is_correct=True,
+                        then=1,
+                    ),
+                    default=0,
+                    output_field=IntegerField(),
+                )
             )
+        )
+
+    def with_total_questions(self):
+        return self.annotate(total_questions=Count("answers"))
+
+    def annotate_performance_metrics(self):
+        answers_prefetch = Prefetch(
+            "answers",
+            queryset=Answer.objects.select_related("selected_alternative", "question"),
+        )
+        return (
+            self.with_total_correct()
+            .with_total_questions()
             .select_related("student", "exam")
-            .prefetch_related("answers__selected_alternative", "answers__question")
+            .prefetch_related(answers_prefetch)
         )
 
 
